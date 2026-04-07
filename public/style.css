@@ -1,0 +1,475 @@
+/* ==========================
+   TĒMU MAINĪGIE
+   ========================== */
+
+
+:root {
+  --bg: #ffffff;
+  --text: #222222;
+  --header-bg: #f8f8f8;
+  --nav-bg: #ffffff;
+  --nav-link: #333;
+  --nav-link-hover-bg: #2e62f1;
+  --nav-link-hover-text: #fff;
+  --aside-bg: #f0f0f0;
+  --aside-text: #333;
+  --card-bg: #ffffff;
+  --card-text: #333;
+  --card-muted: #555;
+  --modal-bg: #ffffff;
+  --footer-bg: #f8f8f8;
+  --footer-text: #333;
+  --button-bg: linear-gradient(45deg, #188fdf, #2e62f1);
+  --button-text: #fff;
+}
+
+
+body.dark {
+  --bg: #121212;
+  --text: #e0e0e0;
+  --header-bg: #1e1e1e;
+  --nav-bg: #1e1e1e;
+  --nav-link: #bbb;
+  --nav-link-hover-bg: #2e62f1;
+  --nav-link-hover-text: #fff;
+  --aside-bg: #1e1e1e;
+  --aside-text: #ccc;
+  --card-bg: #1e1e1e;
+  --card-text: #fff;
+  --card-muted: #aaa;
+  --modal-bg: #1e1e1e;
+  --footer-bg: #1e1e1e;
+  --footer-text: #bbb;
+  --button-bg: linear-gradient(45deg, #188fdf, #2e62f1);
+  --button-text: #fff;
+}
+
+/* ==========================
+   PAMATA STILI
+   ========================== */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Header */
+header {
+  background: #000000;
+  color: #fff;
+  padding: 10px 25px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+nav a {
+  color: var(--nav-link);
+  text-decoration: none;
+  margin: 0 15px;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+nav a:hover {
+  background: var(--nav-link-hover-bg);
+  color: var(--nav-link-hover-text);
+}
+
+/* Logo + Nosaukums rindā */
+.logo-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.logo-box h1 {
+  margin: 0;
+  font-size: 2em;
+  color: #fff;
+}
+
+.logo {
+  height: 75px;
+  width: auto;
+}
+
+
+
+/* Main */
+main {
+  display: flex;
+  padding: 20px;
+}
+
+/* Sekcija */
+section {
+  flex: 3;
+  padding: 10px;
+}
+
+section h1, section h2, section p {
+  color: var(--text);
+}
+
+aside {
+  flex: 1;
+  background: var(--aside-bg);
+  color: var(--aside-text);
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 8px;
+}
+
+/* Kartītes */
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: floatIn 0.8s ease;
+  color: var(--card-text);
+}
+
+.card img {
+  max-width: 100%;
+  border-radius: 8px;
+  transition: transform 0.5s ease;
+}
+
+.card h2 {
+  margin: 15px 0 10px;
+  font-size: 1.5em;
+  color: var(--card-text);
+}
+
+.card p {
+  font-size: 0.95em;
+  color: var(--card-muted);
+  margin-bottom: 15px;
+}
+
+.card button {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 12px 20px;
+  font-size: 1em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.5s ease, transform 0.2s ease;
+}
+
+.card button:hover {
+  background: linear-gradient(45deg, #2e62f1, #188fdf);
+  transform: scale(1.05);
+}
+
+.card:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.8);
+}
+
+/* Keyframes animācija */
+@keyframes floatIn {
+  from {
+      transform: translateY(30px);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+/* Navigācijas josla */
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: transparent;
+  margin-left: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  display: block;
+  padding: 8px 12px;
+  font-size: 0.85em;
+  color: var(--nav-link);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background: var(--nav-link-hover-bg);
+  color: var(--nav-link-hover-text);
+}
+
+/* Dropdown */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: var(--aside-bg);
+  list-style: none;
+  padding: 0;
+  border-radius: 8px;
+  min-width: 150px;
+}
+
+.dropdown-menu li a {
+  padding: 10px;
+  display: block;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--text);
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background: var(--nav-bg);
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
+/* Modālais logs */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  background: var(--modal-bg);
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  color: var(--text);
+  max-width: 500px;
+  animation: zoomIn 0.3s ease;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Kartītes animācija */
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* Animācija modālim */
+@keyframes zoomIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  margin-top: 20px;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.footer-icon img {
+  width: 27px;
+  height: 27px;
+  filter: brightness(0) saturate(100%) invert(72%) sepia(60%) saturate(800%) hue-rotate(163deg) brightness(1.1);
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+
+.footer-icon:hover img {
+  transform: scale(1.3);
+  filter: brightness(0) saturate(100%) invert(80%) sepia(80%) saturate(1200%) hue-rotate(163deg) brightness(1.3);
+}
+
+.icon-telegram {
+  width: 60px;
+  height: 60px;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  margin-top: auto;
+}
+
+
+/* ===== Mobilais izkārtojums ===== */
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;      /* Pārkārto saturu vertikāli */
+  }
+
+  section {
+    order: 1;                   /* Sekcija paliek augšā */
+  }
+
+  aside {
+    order: 2;                   /* Aside nonāk zem sekcijas */
+    margin-left: 0;             /* Noņem lieko atstarpi kreisajā pusē */
+    margin-top: 20px;           /* Pievieno nedaudz vietas virs */
+  }
+}
+
+/* ===== Meklēšanas sadaļa ===== */
+#search-section {
+  text-align: center;
+  margin: 30px auto;
+}
+
+#searchInput {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* ===== Kontaktforma ===== */
+#contact-section {
+  background: var(--card-bg);
+  color: var(--card-text);
+  padding: 30px;
+  margin: 40px auto;
+  max-width: 500px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+#contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#contactForm input,
+#contactForm textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+#contactForm input:focus,
+#contactForm textarea:focus {
+  border-color: #2e62f1;
+  outline: none;
+}
+
+#contactForm button {
+  background: linear-gradient(45deg, #188fdf, #2e62f1);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+#contactForm button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #2e62f1, #188fdf);
+}
+
+#formMessage {
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+#formMessage.error {
+  color: #ff5252;
+  animation: shake 0.3s ease;
+}
+
+#formMessage.success {
+  color: #4CAF50;
+}
+
+/* Kļūdu animācija */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+

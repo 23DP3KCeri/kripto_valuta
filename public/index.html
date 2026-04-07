@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kripto valūtas pārdošana</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark">
+
+  <header>
+    <div class="logo-box">
+      <img src="Attēli/cryptobridge_logo.png" alt="CryptoBridge Logo" class="logo">
+      <h1>CryptoBridge</h1>
+    </div>
+    <nav class="navbar">
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li class="dropdown">
+          <a href="#services">Services ▼</a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Pārdošana</a></li>
+            <li><a href="#">Pirkšana</a></li>
+            <li><a href="#">Apmaiņa</a></li>
+          </ul>
+        </li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="news.html">News</a></li>
+      </ul>
+
+
+      <div class="hamburger">&#9776;</div>
+
+      <button id="theme-toggle">🌙</button>
+    </nav>
+  </header>
+
+
+  <div class="container layout">
+    <main>
+      <section>
+        <h2>Laipni lūgti CryptoBridge</h2>
+      
+        <section id="project-idea" class="project-idea">
+          <h2>Projekta ideja: CryptoBridge – droša un ērta kriptovalūtas apmaiņas platforma</h2>
+        
+          <p>
+            CryptoBridge mērķis ir izveidot modernu, lietotājam draudzīgu un drošu tīmekļa platformu kriptovalūtas apmaiņai.
+            Platforma ļaus lietotājiem vienkāršā veidā pārdot, pirkt vai apmainīt populārākās kriptovalūtas un saņemt līdzekļus
+            tieši savā bankas kontā. Projekts savieno digitālos aktīvus ar tradicionālo finanšu sistēmu, mazinot tehniskos
+            šķēršļus un nevajadzīgus starpniekus.
+          </p>
+        
+          <p>
+            CryptoBridge apvienos skaidru un intuitīvu lietotāja interfeisu ar mūsdienīgām tehnoloģijām un stingriem drošības
+            principiem, nodrošinot, ka gan iesācēji, gan pieredzējuši lietotāji var droši veikt darījumus.
+          </p>
+        
+          <h3>Galvenās funkcionalitātes:</h3>
+          <ul>
+            <li>Ātra un vienkārša kriptovalūtas pārdošana ar izmaksu uz bankas kontu.</li>
+            <li>Intuitīvs lietotāja ceļš ar skaidriem apmaiņas soļiem un darījumu statusiem.</li>
+            <li>Reāllaika valūtu kursu attēlošana un darījumu kalkulācijas.</li>
+            <li>Lietotāju autentifikācija, lomu vadība un OWASP vadlīniju ievērošana drošībai.</li>
+            <li>Administrēšanas panelis darījumu, lietotāju un statistikas pārvaldībai.</li>
+          </ul>
+        
+          <p>
+            Rezultātā CryptoBridge sniegs drošu, ātru un pieejamu risinājumu digitālo aktīvu konvertēšanai reālā naudā,
+            piemērotu gan privātpersonām, gan maziem uzņēmumiem.
+          </p>
+        </section>
+        
+        <img src="https://cdn-icons-png.freepik.com/512/2272/2272767.png" alt="Parauga attēls" width="300">
+      </section>
+
+      <aside>
+        <h3>Saistītie raksti</h3>
+        <ul>
+          <li><a href="#">Pārdošana</a></li>
+          <li><a href="#">Pirkšana</a></li>
+          <li><a href="#">Apmaiņa</a></li>
+          <li><a href="#">News</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <!-- ===== Meklēšanas lauks ===== -->
+  <section id="search-section">
+    <h2>Meklēt pakalpojumu</h2>
+    <input type="text" id="searchInput" placeholder="Ievadi meklējamo vārdu...">
+  </section>
+
+    <section class="card-container">
+      <div class="card">
+        <img src="https://blocktrade.com/wp-content/uploads/2023/09/cover_bitcoin-into-cash-1024x576.png" alt="Produkts 1">
+        <h2>Pārdošana</h2>
+        <p>Pārdot savu kriptovalūtu.</p>
+        <button class="open-modal" 
+                data-title="Pārdošana" 
+                data-info="Šeit vari pārdot savu kriptovalūtu un saņemt naudu tieši savā bankas kontā. Drošs un ātrs process.">
+          Learn More
+        </button>
+      </div>
+
+      <div class="card">
+        <img src="https://coincentral.com/wp-content/uploads/2022/08/how-to-buy-crypto.png" alt="Produkts 2">
+        <h2>Pirkšana</h2>
+        <p>Pirkt kriptovalūtu.</p>
+        <button class="open-modal" 
+                data-title="Pirkšana" 
+                data-info="Šajā sadaļā vari ērti iegādāties dažādas kriptovalūtas, izmantojot bankas pārskaitījumu.">
+          Learn More
+        </button>
+      </div>
+
+      <div class="card">
+        <img src="https://www.addevice.io/storage/ckeditor/uploads/images/6390774fc068f_guide.on.how.to.start.a.cryptocurrency.exchange.png" alt="Produkts 3">
+        <h2>Apmaiņa</h2>
+        <p>Apmaini savu kriptovalūtu.</p>
+        <button class="open-modal" 
+                data-title="Apmaiņa" 
+                data-info="Apmaini savu esošo kriptovalūtu pret citu ar labākajiem tirgus kursiem.">
+          Learn More
+        </button>
+      </div>
+    </section>
+  </div>
+  <!-- ===== Kontaktforma ===== -->
+  <section id="contact-section">
+    <h2>Sazinies ar mums</h2>
+    <form id="contactForm">
+      <label for="name">Vārds:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">E-pasts:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="message">Ziņojums:</label>
+      <textarea id="message" name="message" required></textarea>
+
+      <button type="submit">Sūtīt</button>
+      <p id="formMessage"></p>
+    </form>
+  </section>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title">Detalizēta informācija</h2>
+      <p id="modal-info">Šeit parādīsies papildus informācija par izvēlēto kartīti.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-icons">
+      <a href="#" class="footer-icon"><img src="ikonas/Twitter-X.svg" alt="Twitter/X"></a>
+      <a href="#" class="footer-icon"><img src="ikonas/instagram.svg" alt="Instagram"></a>
+      <a href="#" class="footer-icon"><img src="ikonas/telegram.svg" alt="Telegram" class="icon-telegram"></a>
+    </div>
+    <p>&copy; 2025 Kripto valūtas pārdošana. Visas tiesības aizsargātas.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ziņu Panelis</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark">
+
+<header>
+  <h1>Ziņu Panelis</h1>
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="index.html">Atpakaļ</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+<section id="news-dashboard">
+  <h2>Ziņu meklēšanas panelis</h2>
+
+  <div id="news-search">
+    <input type="text" id="newsInput" placeholder="Ievadi tēmu (piem., crypto)...">
+    <button id="searchNews">Meklēt</button>
+  </div>
+
+  <p id="newsError"></p>
+
+  <div id="newsHistory">
+    <h3>Pēdējie meklējumi:</h3>
+    <ul id="newsHistoryList"></ul>
+  </div>
+
+  <div id="newsResults" class="card-container"></div>
+</section>
+
+
+<footer>
+  <p>&copy; 2025 Ziņu panelis</p>
+</footer>
+
+<script src="news.js"></script>
+</body>
+</html>
