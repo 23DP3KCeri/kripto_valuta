@@ -45,6 +45,7 @@
           type="number"
           min="0"
           class="mb-2"
+          :error-messages="amountError"
           @input="calculateTo"
         />
 
@@ -65,6 +66,8 @@
           variant="flat"
           class="gradient-btn"
           size="large"
+          :disabled="!isValid || loading"
+          :loading="loading"
           @click="submit"
         >
           Apmainīt
@@ -107,6 +110,13 @@ const toCrypto = ref('ETH')
 const fromAmount = ref('')
 const toAmount = ref('0.00000000')
 const success = ref(false)
+const loading = ref(false)
+
+const amountError = computed(() =>
+  fromAmount.value !== '' && parseFloat(fromAmount.value) <= 0 ? 'Daudzumam jābūt lielākam par 0' : ''
+)
+
+const isValid = computed(() => parseFloat(fromAmount.value) > 0)
 
 const toOptions = computed(() => cryptoOptions.filter(o => o.symbol !== fromCrypto.value))
 
@@ -128,12 +138,15 @@ watch([fromCrypto, toCrypto], () => {
 })
 
 function submit() {
-  if (!fromAmount.value || parseFloat(fromAmount.value) <= 0) return
-
-  addTransaction({ id: transactions.length + 1, type: 'exchange', fromCrypto: fromCrypto.value, toCrypto: toCrypto.value, amount: fromAmount.value, result: toAmount.value, date: new Date() })
-  success.value = true
-  fromAmount.value = ''
-  toAmount.value = '0.00000000'
+  if (!isValid.value || loading.value) return
+  loading.value = true
+  setTimeout(() => {
+    addTransaction({ id: transactions.length + 1, type: 'exchange', fromCrypto: fromCrypto.value, toCrypto: toCrypto.value, amount: fromAmount.value, result: toAmount.value, date: new Date() })
+    success.value = true
+    fromAmount.value = ''
+    toAmount.value = '0.00000000'
+    loading.value = false
+  }, 1000)
 }
 </script>
 

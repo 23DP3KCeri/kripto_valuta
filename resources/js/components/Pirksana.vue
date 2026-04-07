@@ -34,6 +34,7 @@
           type="number"
           min="0"
           class="mb-2"
+          :error-messages="amountError"
           @input="calculateCrypto"
         />
 
@@ -64,6 +65,8 @@
           variant="flat"
           class="gradient-btn"
           size="large"
+          :disabled="!isValid || loading"
+          :loading="loading"
           @click="submit"
         >
           Pirkt
@@ -101,14 +104,28 @@ const cryptoOptions = [
   { symbol: 'SOL', label: 'Solana (SOL)' },
 ]
 
+const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/
+
 const selectedCrypto = ref('BTC')
 const eurAmount = ref('')
 const cryptoAmount = ref('0.00000000')
 const iban = ref('')
-const ibanError = ref('')
 const success = ref(false)
+const loading = ref(false)
 
 const rate = computed(() => rates[selectedCrypto.value])
+
+const amountError = computed(() =>
+  eurAmount.value !== '' && parseFloat(eurAmount.value) <= 0 ? 'Daudzumam jābūt lielākam par 0' : ''
+)
+
+const ibanError = computed(() =>
+  iban.value && !ibanRegex.test(iban.value.replace(/\s/g, '')) ? 'Lūdzu ievadi derīgu IBAN!' : ''
+)
+
+const isValid = computed(() =>
+  parseFloat(eurAmount.value) > 0 && ibanRegex.test(iban.value.replace(/\s/g, ''))
+)
 
 function calculateCrypto() {
   const val = parseFloat(eurAmount.value)
@@ -120,24 +137,16 @@ function calculateCrypto() {
 watch(selectedCrypto, () => calculateCrypto())
 
 function submit() {
-  ibanError.value = ''
-
-  if (!eurAmount.value || parseFloat(eurAmount.value) <= 0) {
-    ibanError.value = ''
-    return
-  }
-
-  const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/
-  if (!ibanRegex.test(iban.value.replace(/\s/g, ''))) {
-    ibanError.value = 'Lūdzu ievadi derīgu IBAN!'
-    return
-  }
-
-  addTransaction({ id: transactions.length + 1, type: 'buy', crypto: selectedCrypto.value, amount: eurAmount.value, result: cryptoAmount.value, date: new Date() })
-  success.value = true
-  eurAmount.value = ''
-  cryptoAmount.value = '0.00000000'
-  iban.value = ''
+  if (!isValid.value || loading.value) return
+  loading.value = true
+  setTimeout(() => {
+    addTransaction({ id: transactions.length + 1, type: 'buy', crypto: selectedCrypto.value, amount: eurAmount.value, result: cryptoAmount.value, date: new Date() })
+    success.value = true
+    eurAmount.value = ''
+    cryptoAmount.value = '0.00000000'
+    iban.value = ''
+    loading.value = false
+  }, 1000)
 }
 </script>
 

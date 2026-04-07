@@ -34,6 +34,7 @@
           type="number"
           min="0"
           class="mb-2"
+          :error-messages="amountError"
           @input="calculateEur"
         />
 
@@ -64,6 +65,8 @@
           variant="flat"
           class="gradient-btn"
           size="large"
+          :disabled="!isValid || loading"
+          :loading="loading"
           @click="submit"
         >
           Pārdot
@@ -101,14 +104,28 @@ const cryptoOptions = [
   { symbol: 'SOL', label: 'Solana (SOL)' },
 ]
 
+const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/
+
 const selectedCrypto = ref('BTC')
 const amount = ref('')
 const eurAmount = ref('0.00')
 const iban = ref('')
-const ibanError = ref('')
 const success = ref(false)
+const loading = ref(false)
 
 const rate = computed(() => rates[selectedCrypto.value])
+
+const amountError = computed(() =>
+  amount.value !== '' && parseFloat(amount.value) <= 0 ? 'Daudzumam jābūt lielākam par 0' : ''
+)
+
+const ibanError = computed(() =>
+  iban.value && !ibanRegex.test(iban.value.replace(/\s/g, '')) ? 'Lūdzu ievadi derīgu IBAN!' : ''
+)
+
+const isValid = computed(() =>
+  parseFloat(amount.value) > 0 && ibanRegex.test(iban.value.replace(/\s/g, ''))
+)
 
 function calculateEur() {
   const val = parseFloat(amount.value)
@@ -120,24 +137,16 @@ function calculateEur() {
 watch(selectedCrypto, () => calculateEur())
 
 function submit() {
-  ibanError.value = ''
-
-  if (!amount.value || parseFloat(amount.value) <= 0) {
-    ibanError.value = ''
-    return
-  }
-
-  const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$/
-  if (!ibanRegex.test(iban.value.replace(/\s/g, ''))) {
-    ibanError.value = 'Lūdzu ievadi derīgu IBAN!'
-    return
-  }
-
-  addTransaction({ id: transactions.length + 1, type: 'sell', crypto: selectedCrypto.value, amount: amount.value, result: eurAmount.value, date: new Date() })
-  success.value = true
-  amount.value = ''
-  eurAmount.value = '0.00'
-  iban.value = ''
+  if (!isValid.value || loading.value) return
+  loading.value = true
+  setTimeout(() => {
+    addTransaction({ id: transactions.length + 1, type: 'sell', crypto: selectedCrypto.value, amount: amount.value, result: eurAmount.value, date: new Date() })
+    success.value = true
+    amount.value = ''
+    eurAmount.value = '0.00'
+    iban.value = ''
+    loading.value = false
+  }, 1000)
 }
 </script>
 

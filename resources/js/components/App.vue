@@ -21,14 +21,15 @@
             <v-btn variant="text" v-bind="props" class="nav-btn">Services ▼</v-btn>
           </template>
           <v-list density="compact" bg-color="#1e1e1e">
-            <v-list-item title="Pārdošana" href="#" />
-            <v-list-item title="Pirkšana" href="#" />
-            <v-list-item title="Apmaiņa" href="#" />
+            <v-list-item title="Pārdošana" to="/pardosana" />
+            <v-list-item title="Pirkšana" to="/pirksana" />
+            <v-list-item title="Apmaiņa" to="/apmaina" />
           </v-list>
         </v-menu>
 
         <v-btn variant="text" href="#contact" class="nav-btn">Contact</v-btn>
         <v-btn variant="text" href="/news.html" class="nav-btn">News</v-btn>
+        <v-btn variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
       </div>
 
       <!-- Dark/Light toggle -->
@@ -45,11 +46,12 @@
       <v-list>
         <v-list-item title="Home" href="#home" />
         <v-list-item title="About" href="#about" />
-        <v-list-item title="Pārdošana" href="#" />
-        <v-list-item title="Pirkšana" href="#" />
-        <v-list-item title="Apmaiņa" href="#" />
+        <v-list-item title="Pārdošana" to="/pardosana" />
+        <v-list-item title="Pirkšana" to="/pirksana" />
+        <v-list-item title="Apmaiņa" to="/apmaina" />
         <v-list-item title="Contact" href="#contact" />
         <v-list-item title="News" href="/news.html" />
+        <v-list-item title="Vēsture" to="/vesture" />
       </v-list>
     </v-navigation-drawer>
 

@@ -54,30 +54,37 @@
         </v-row>
 
         <!-- Table -->
-        <v-table v-if="filtered.length">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Tips</th>
-              <th>Kriptovalūta</th>
-              <th>Daudzums</th>
-              <th>Rezultāts</th>
-              <th>Datums</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="tx in filtered" :key="tx.id">
-              <td>{{ tx.id }}</td>
-              <td>{{ tx.type }}</td>
-              <td>{{ tx.type === 'exchange' ? `${tx.fromCrypto} → ${tx.toCrypto}` : tx.crypto }}</td>
-              <td>{{ tx.amount }}</td>
-              <td>{{ tx.result }}</td>
-              <td>{{ tx.date.toLocaleString('lv-LV') }}</td>
-            </tr>
-          </tbody>
-        </v-table>
+        <div v-if="transactions.length === 0" class="text-center py-8">
+          <v-icon icon="mdi-history" size="56" class="mb-3 text-medium-emphasis" />
+          <p class="text-medium-emphasis">Vēl nav neviena darījuma.</p>
+        </div>
 
-        <p v-else class="text-medium-emphasis text-center mt-4">Nav darījumu.</p>
+        <template v-else>
+          <v-table v-if="filtered.length">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tips</th>
+                <th>Kriptovalūta</th>
+                <th>Daudzums</th>
+                <th>Rezultāts</th>
+                <th>Datums</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="tx in filtered" :key="tx.id">
+                <td>{{ tx.id }}</td>
+                <td>{{ tx.type }}</td>
+                <td>{{ tx.type === 'exchange' ? `${tx.fromCrypto} → ${tx.toCrypto}` : tx.crypto }}</td>
+                <td>{{ tx.amount }}</td>
+                <td>{{ tx.result }}</td>
+                <td>{{ tx.date.toLocaleString('lv-LV') }}</td>
+              </tr>
+            </tbody>
+          </v-table>
+
+          <p v-else class="text-medium-emphasis text-center mt-4">Nav atbilstošu darījumu.</p>
+        </template>
 
       </v-card-text>
     </v-card>
