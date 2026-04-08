@@ -32,6 +32,12 @@
         <v-btn variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
       </div>
 
+      <!-- User + logout -->
+      <span v-if="user" class="text-caption text-medium-emphasis mr-1">{{ user.name }}</span>
+      <v-btn v-if="user" icon variant="text" class="theme-btn" title="Iziet" @click="handleLogout">
+        <v-icon icon="mdi-logout" />
+      </v-btn>
+
       <!-- Dark/Light toggle -->
       <v-btn icon variant="text" @click="toggleTheme" class="theme-btn">
         {{ isDark ? '🌙' : '☀️' }}
@@ -89,13 +95,23 @@
 
 <script>
 import { useTheme } from 'vuetify'
+import { useRouter } from 'vue-router'
+import { useAuth, logout } from '../composables/useAuth'
 
 export default {
   name: 'App',
 
   setup() {
     const theme = useTheme()
-    return { theme }
+    const router = useRouter()
+    const { user } = useAuth()
+
+    async function handleLogout() {
+      await logout()
+      router.push('/login')
+    }
+
+    return { theme, user, handleLogout }
   },
 
   data() {
