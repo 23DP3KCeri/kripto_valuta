@@ -92,10 +92,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
 
-const { transactions } = useCryptoState()
+const { transactions, fetchTransactions } = useCryptoState()
+
+onMounted(fetchTransactions)
 
 const searchId = ref('')
 const filterType = ref('Visi')
