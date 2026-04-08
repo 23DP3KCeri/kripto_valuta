@@ -6,13 +6,19 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(Transaction::all());
+        $user = Auth::user();
+        $transactions = $user->role === 'admin'
+            ? Transaction::all()
+            : Transaction::where('user_id', $user->id)->get();
+
+        return response()->json($transactions);
     }
 
     public function store(Request $request): JsonResponse
