@@ -96,7 +96,7 @@
 import { ref, computed, watch } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
 
-const { rates, transactions, addTransaction } = useCryptoState()
+const { rates, addTransaction } = useCryptoState()
 
 const cryptoOptions = [
   { symbol: 'BTC', label: 'Bitcoin (BTC)' },
@@ -137,16 +137,21 @@ watch([fromCrypto, toCrypto], () => {
   calculateTo()
 })
 
-function submit() {
+function parseNum(str) {
+  return parseFloat(String(str).replace(/\s/g, '').replace(',', '.')) || 0
+}
+
+async function submit() {
   if (!isValid.value || loading.value) return
   loading.value = true
-  setTimeout(() => {
-    addTransaction({ id: transactions.length + 1, type: 'exchange', fromCrypto: fromCrypto.value, toCrypto: toCrypto.value, amount: fromAmount.value, result: toAmount.value, date: new Date() })
+  try {
+    await addTransaction({ type: 'exchange', crypto: fromCrypto.value, from_crypto: fromCrypto.value, to_crypto: toCrypto.value, amount: parseFloat(fromAmount.value), result: parseNum(toAmount.value) })
     success.value = true
     fromAmount.value = ''
     toAmount.value = '0.00000000'
+  } finally {
     loading.value = false
-  }, 1000)
+  }
 }
 </script>
 

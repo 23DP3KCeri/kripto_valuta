@@ -24,9 +24,24 @@ function startRateUpdates() {
 
 startRateUpdates()
 
-function addTransaction(tx) {
-  transactions.push(tx)
+async function fetchTransactions() {
+  const res = await fetch('/api/transactions')
+  const data = await res.json()
+  transactions.splice(0, transactions.length, ...data)
 }
+
+async function addTransaction(payload) {
+  const res = await fetch('/api/transactions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user_id: 1, ...payload }),
+  })
+  const tx = await res.json()
+  transactions.push(tx)
+  return tx
+}
+
+fetchTransactions()
 
 export function useCryptoState() {
   return { rates, transactions, addTransaction }

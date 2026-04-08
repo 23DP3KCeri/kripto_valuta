@@ -75,10 +75,10 @@
               <tr v-for="tx in filtered" :key="tx.id">
                 <td>{{ tx.id }}</td>
                 <td>{{ tx.type }}</td>
-                <td>{{ tx.type === 'exchange' ? `${tx.fromCrypto} → ${tx.toCrypto}` : tx.crypto }}</td>
+                <td>{{ tx.type === 'exchange' ? `${tx.from_crypto} → ${tx.to_crypto}` : tx.crypto }}</td>
                 <td>{{ tx.amount }}</td>
                 <td>{{ tx.result }}</td>
-                <td>{{ tx.date.toLocaleString('lv-LV') }}</td>
+                <td>{{ new Date(tx.created_at).toLocaleString('lv-LV') }}</td>
               </tr>
             </tbody>
           </v-table>
@@ -129,14 +129,14 @@ const filtered = computed(() => {
   if (filterCrypto.value !== 'Visi') {
     list = list.filter(tx =>
       tx.crypto === filterCrypto.value ||
-      tx.fromCrypto === filterCrypto.value ||
-      tx.toCrypto === filterCrypto.value
+      tx.from_crypto === filterCrypto.value ||
+      tx.to_crypto === filterCrypto.value
     )
   }
 
   list.sort((a, b) => {
-    if (sortBy.value === 'date-desc') return b.date - a.date
-    if (sortBy.value === 'date-asc') return a.date - b.date
+    if (sortBy.value === 'date-desc') return new Date(b.created_at) - new Date(a.created_at)
+    if (sortBy.value === 'date-asc') return new Date(a.created_at) - new Date(b.created_at)
     if (sortBy.value === 'amount-desc') return parseAmount(b.amount) - parseAmount(a.amount)
     if (sortBy.value === 'amount-asc') return parseAmount(a.amount) - parseAmount(b.amount)
     return 0
