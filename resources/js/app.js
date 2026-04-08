@@ -6,10 +6,13 @@ import '@mdi/font/css/materialdesignicons.css';
 import 'vuetify/styles';
 import App from './components/App.vue';
 import router from './router';
+import { fetchUser } from './composables/useAuth';
 
 const vuetify = createVuetify({
     components,
     directives,
 });
 
-createApp(App).use(router).use(vuetify).mount('#app');
+fetchUser().finally(() => {
+    createApp(App).use(router).use(vuetify).mount('#app');
+});
