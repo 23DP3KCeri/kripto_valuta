@@ -13,8 +13,8 @@
 
       <!-- Nav saites (desktop) -->
       <div class="nav-links-desktop">
-        <v-btn variant="text" href="#home" class="nav-btn">Home</v-btn>
-        <v-btn variant="text" href="#about" class="nav-btn">About</v-btn>
+        <v-btn variant="text" to="/" class="nav-btn">Home</v-btn>
+        <v-btn variant="text" to="/about" class="nav-btn">About</v-btn>
 
         <v-menu open-on-hover>
           <template #activator="{ props }">
@@ -27,13 +27,13 @@
           </v-list>
         </v-menu>
 
-        <v-btn variant="text" href="#contact" class="nav-btn">Contact</v-btn>
+        <v-btn variant="text" to="/contact" class="nav-btn">Contact</v-btn>
         <v-btn variant="text" href="/news.html" class="nav-btn">News</v-btn>
-        <v-btn variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
+        <v-btn v-if="user" variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
       </div>
 
       <!-- User + logout -->
-      <span v-if="user" class="text-caption text-medium-emphasis mr-1">{{ user.name }}</span>
+      <v-btn v-if="user" variant="text" class="nav-btn mr-1" to="/profile">{{ user.name }}</v-btn>
       <v-btn v-if="user" icon variant="text" class="theme-btn" title="Iziet" @click="handleLogout">
         <v-icon icon="mdi-logout" />
       </v-btn>
@@ -50,14 +50,15 @@
     <!-- Mobile drawer -->
     <v-navigation-drawer v-model="drawer" temporary>
       <v-list>
-        <v-list-item title="Home" href="#home" />
-        <v-list-item title="About" href="#about" />
+        <v-list-item title="Home" to="/" />
+        <v-list-item title="About" to="/about" />
         <v-list-item title="Pārdošana" to="/pardosana" />
         <v-list-item title="Pirkšana" to="/pirksana" />
         <v-list-item title="Apmaiņa" to="/apmaina" />
-        <v-list-item title="Contact" href="#contact" />
+        <v-list-item title="Contact" to="/contact" />
         <v-list-item title="News" href="/news.html" />
-        <v-list-item title="Vēsture" to="/vesture" />
+        <v-list-item v-if="user" title="Vēsture" to="/vesture" />
+        <v-list-item v-if="user" title="Profils" to="/profile" />
       </v-list>
     </v-navigation-drawer>
 
