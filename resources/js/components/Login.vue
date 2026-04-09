@@ -14,6 +14,7 @@
           variant="outlined"
           type="email"
           class="mb-3"
+          :error-messages="emailError"
         />
 
         <v-text-field
@@ -49,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 
@@ -60,6 +61,10 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const loading = ref(false)
+
+const emailError = computed(() =>
+  email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) ? 'Ievadi derīgu e-pasta adresi.' : ''
+)
 
 async function submit() {
   error.value = ''

@@ -58,7 +58,6 @@
           readonly
           placeholder=" "
           class="mb-4"
-          bg-color="surface-variant"
         />
 
         <!-- Submit -->
