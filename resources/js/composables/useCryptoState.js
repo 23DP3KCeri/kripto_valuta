@@ -26,7 +26,10 @@ function startRateUpdates() {
 startRateUpdates()
 
 async function fetchTransactions() {
-  const res = await fetch('/api/transactions', { credentials: 'include' })
+  const res = await fetch('/api/transactions', {
+    credentials: 'include',
+    headers: { 'Accept': 'application/json' },
+  })
   if (!res.ok) return
   const data = await res.json()
   transactions.splice(0, transactions.length, ...data)
@@ -36,7 +39,7 @@ async function addTransaction(payload) {
   const { user } = useAuth()
   const res = await fetch('/api/transactions', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     credentials: 'include',
     body: JSON.stringify({ user_id: user.value?.id, ...payload }),
   })
