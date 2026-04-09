@@ -7,10 +7,15 @@ import Vesture from '../components/Vesture.vue';
 import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
 import Admin from '../components/Admin.vue';
+import About from '../components/About.vue';
+import Contact from '../components/Contact.vue';
+import Profile from '../components/Profile.vue';
 import { useAuth } from '../composables/useAuth';
 
 const routes = [
     { path: '/', component: Home },
+    { path: '/about', component: About, meta: { public: true } },
+    { path: '/contact', component: Contact, meta: { public: true } },
     { path: '/pardosana', component: Pardosana },
     { path: '/pirksana', component: Pirksana },
     { path: '/apmaina', component: Apmaina },
@@ -18,6 +23,7 @@ const routes = [
     { path: '/login', component: Login, meta: { guest: true } },
     { path: '/register', component: Register, meta: { guest: true } },
     { path: '/admin', component: Admin, meta: { admin: true } },
+    { path: '/profile', component: Profile },
 ];
 
 const router = createRouter({
@@ -27,7 +33,7 @@ const router = createRouter({
 
 router.beforeEach((to) => {
     const { user } = useAuth();
-    if (!to.meta.guest && !user.value) return '/login';
+    if (!to.meta.guest && !to.meta.public && !user.value) return '/login';
     if (to.meta.guest && user.value) return '/';
     if (to.meta.admin && user.value?.role !== 'admin') return '/';
 });

@@ -13,7 +13,7 @@
                     <v-img src="https://blocktrade.com/wp-content/uploads/2023/09/cover_bitcoin-into-cash-1024x576.png" height="180" cover />
                     <v-card-title>Pārdošana</v-card-title>
                     <v-card-text>Pārdod savu kriptovalūtu un saņem naudu savā bankas kontā.</v-card-text>
-                    <v-card-actions>
+                    <v-card-actions class="mt-auto">
                         <v-btn color="primary" variant="flat" class="gradient-btn" to="/pardosana">Pārdot</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -24,7 +24,7 @@
                     <v-img src="https://coincentral.com/wp-content/uploads/2022/08/how-to-buy-crypto.png" height="180" cover />
                     <v-card-title>Pirkšana</v-card-title>
                     <v-card-text>Iegādājies kriptovalūtu ērti un droši.</v-card-text>
-                    <v-card-actions>
+                    <v-card-actions class="mt-auto">
                         <v-btn color="primary" variant="flat" class="gradient-btn" to="/pirksana">Pirkt</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -35,7 +35,7 @@
                     <v-img src="https://www.addevice.io/storage/ckeditor/uploads/images/6390774fc068f_guide.on.how.to.start.a.cryptocurrency.exchange.png" height="180" cover />
                     <v-card-title>Apmaiņa</v-card-title>
                     <v-card-text>Apmaini vienu kriptovalūtu pret citu.</v-card-text>
-                    <v-card-actions>
+                    <v-card-actions class="mt-auto">
                         <v-btn color="primary" variant="flat" class="gradient-btn" to="/apmaina">Apmainīt</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -53,6 +53,8 @@ export default {
 <style scoped>
 .lift-card {
     width: 100%;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
