@@ -56,6 +56,7 @@
           :suffix="toCrypto"
           variant="outlined"
           readonly
+          placeholder=" "
           class="mb-4"
           bg-color="surface-variant"
         />
@@ -85,8 +86,8 @@
       closable
       @click:close="success = false"
     >
-      Darījums veiksmīgi iesniegts! <strong>{{ fromAmount }} {{ fromCrypto }}</strong>
-      → <strong>{{ toAmount }} {{ toCrypto }}</strong>.
+      Darījums veiksmīgi iesniegts! <strong>{{ successData.fromAmount }} {{ successData.fromCrypto }}</strong>
+      → <strong>{{ successData.toAmount }} {{ successData.toCrypto }}</strong>.
     </v-alert>
 
   </v-container>
@@ -110,6 +111,7 @@ const toCrypto = ref('ETH')
 const fromAmount = ref('')
 const toAmount = ref('0.00000000')
 const success = ref(false)
+const successData = ref({})
 const loading = ref(false)
 
 const amountError = computed(() =>
@@ -146,6 +148,7 @@ async function submit() {
   loading.value = true
   try {
     await addTransaction({ type: 'exchange', crypto: fromCrypto.value, from_crypto: fromCrypto.value, to_crypto: toCrypto.value, amount: parseFloat(fromAmount.value), result: parseNum(toAmount.value) })
+    successData.value = { fromAmount: fromAmount.value, fromCrypto: fromCrypto.value, toAmount: toAmount.value, toCrypto: toCrypto.value }
     success.value = true
     fromAmount.value = ''
     toAmount.value = '0.00000000'

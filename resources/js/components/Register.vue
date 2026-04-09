@@ -29,6 +29,7 @@
           variant="outlined"
           type="password"
           class="mb-4"
+          :error-messages="passwordError"
         />
 
         <v-alert v-if="error" type="error" variant="tonal" class="mb-4">
@@ -56,7 +57,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 
@@ -68,6 +69,10 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const loading = ref(false)
+
+const passwordError = computed(() =>
+  password.value.length > 0 && password.value.length < 8 ? 'Parolei jābūt vismaz 8 rakstzīmes.' : ''
+)
 
 async function submit() {
   error.value = ''

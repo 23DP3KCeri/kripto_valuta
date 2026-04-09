@@ -45,6 +45,7 @@
           suffix="EUR"
           variant="outlined"
           readonly
+          placeholder=" "
           class="mb-4"
           bg-color="surface-variant"
         />
@@ -84,8 +85,8 @@
       closable
       @click:close="success = false"
     >
-      Darījums veiksmīgi iesniegts! <strong>{{ amount }} {{ selectedCrypto }}</strong>
-      → <strong>{{ eurAmount }} EUR</strong> tiks pārskaitīts uz {{ iban }}.
+      Darījums veiksmīgi iesniegts! <strong>{{ successData.amount }} {{ successData.crypto }}</strong>
+      → <strong>{{ successData.eurAmount }} EUR</strong> tiks pārskaitīts uz {{ successData.iban }}.
     </v-alert>
 
   </v-container>
@@ -111,6 +112,7 @@ const amount = ref('')
 const eurAmount = ref('0.00')
 const iban = ref('')
 const success = ref(false)
+const successData = ref({})
 const loading = ref(false)
 
 const rate = computed(() => rates[selectedCrypto.value])
@@ -145,6 +147,7 @@ async function submit() {
   loading.value = true
   try {
     await addTransaction({ type: 'sell', crypto: selectedCrypto.value, amount: parseFloat(amount.value), result: parseNum(eurAmount.value), iban: iban.value })
+    successData.value = { amount: amount.value, crypto: selectedCrypto.value, eurAmount: eurAmount.value, iban: iban.value }
     success.value = true
     amount.value = ''
     eurAmount.value = '0.00'
