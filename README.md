@@ -1,58 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CryptoBridge
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Par projektu
+CryptoBridge ir tīmekļa lietojumprogramma, kas ļauj lietotājiem pirkt, pārdot un apmainīt kriptovalūtas. Sistēma darbojas kā simulators, jo tajā netiek veikti reāli maksājumi.
 
-## About Laravel
+## Galvenā funkcionalitāte
+- Lietotāju reģistrācija un pieteikšanās (register / login)
+- Kriptovalūtu pirkšana (`/pirksana`)
+- Kriptovalūtu pārdošana (`/pardosana`)
+- Kriptovalūtu apmaiņa (`/apmaina`)
+- Darījumu vēsture (`/vesture`)
+- Lietotāja profils (`/profile`)
+- Administratora panelis (`/admin`)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Lietotāju lomas
+- **User (lietotājs)** – var veikt darījumus un skatīt savu vēsturi  
+- **Admin (administrators)** – var redzēt visus lietotājus un darījumus, dzēst lietotājus un darījumus, kā arī piešķirt admin tiesības  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Izmantotās tehnoloģijas
+- Laravel (backend)
+- Vue.js (frontend)
+- MySQL (datubāze)
+- DBngin (lokālais serveris)
+- Vite (frontend build tools)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Datubāze
+Sistēmā tiek izmantotas vairākas savstarpēji saistītas tabulas:
+- users (lietotāji)
+- transactions (darījumi)
+- wallets (lietotāju kripto maki)
+- exchange_rates (valūtu kursi)
 
-## Learning Laravel
+## Palaišana
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Uzstādi atkarības:
+- composer install  
+- npm install  
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. Palaid migrācijas:
+- php artisan migrate  
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+3. Palaid serveri:
+- php artisan serve  
+- npm run dev  
 
-## Agentic Development
+4. Atver pārlūkā:
+- http://127.0.0.1:8000  
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
-```bash
-composer require laravel/boost --dev
+## PWA (Progressive Web App)
 
-php artisan boost:install
-```
+Sistēmai ir pievienots PWA atbalsts:
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+- Izveidots manifest.json  
+- Pievienots service worker (sw.js)  
+- Aplikāciju iespējams instalēt kā lietotni (Install App)  
+- Tiek izmantota kešošana, lai uzlabotu veiktspēju  
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## E-pastu sūtīšana
 
-## Code of Conduct
+Pēc lietotāja reģistrācijas tiek nosūtīts e-pasts.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Tiek izmantots Laravel Mail  
+- Testēšanai izmantots log mail driver  
+- E-pasti tiek saglabāti failā:  
+  storage/logs/laravel.log  
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Testēšana
 
-## License
+Sistēmas testēšanas scenāriji atrodami failā `TESTCASES.md`.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## Drošība (OWASP)
+
+Izstrādē tika ievēroti pamata drošības principi:
+
+- Datu validācija (frontend + backend)  
+- Lietotāju autentifikācija (login)  
+- Autorizācija pēc lomām (user / admin)  
+- Piekļuves kontrole datiem  
+- Droša sesiju izmantošana  
+
+---
+
+## Pieejamība (WCAG)
+
+Sistēma ir veidota, ievērojot pieejamības principus:
+
+- Skaidri un saprotami formu lauki (labels)  
+- Kļūdu paziņojumi lietotājam  
+- Konsekvents dizains visās lapās  
+- Navigācija ar tastatūru  
+- Pietiekams kontrasts starp tekstu un fonu  
+
+---
+
+## Datu apstrāde
+
+Sistēmā tiek veikta datu iegūšana un apstrāde no vairākām savstarpēji saistītām tabulām:
+
+- Darījumi tiek saistīti ar lietotāju (user_id)  
+- Wallet tiek automātiski atjaunināts pēc darījumiem  
+- Administrators var redzēt visu lietotāju datus  
+- Dati tiek kārtoti, filtrēti un meklēti  
+
+---
+
+## Piezīme
+
+Šī sistēma ir mācību projekts un neveic reālus finanšu darījumus.
