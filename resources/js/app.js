@@ -13,6 +13,5 @@ const vuetify = createVuetify({
     directives,
 });
 
-fetchUser().finally(() => {
-    createApp(App).use(router).use(vuetify).mount('#app');
-});
+fetchUser();
+createApp(App).use(router).use(vuetify).mount('#app');

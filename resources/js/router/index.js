@@ -10,7 +10,7 @@ import Admin from '../components/Admin.vue';
 import About from '../components/About.vue';
 import Contact from '../components/Contact.vue';
 import Profile from '../components/Profile.vue';
-import { useAuth } from '../composables/useAuth';
+import { useAuth, authReady } from '../composables/useAuth';
 
 const routes = [
     { path: '/', component: Home },
@@ -31,7 +31,8 @@ const router = createRouter({
     routes,
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
+    await authReady;
     const { user } = useAuth();
     if (!to.meta.guest && !to.meta.public && !user.value) return '/login';
     if (to.meta.guest && user.value) return '/';

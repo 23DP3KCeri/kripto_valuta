@@ -2,6 +2,9 @@ import { ref } from 'vue'
 
 const user = ref(null)
 
+let resolveReady
+export const authReady = new Promise(resolve => { resolveReady = resolve })
+
 const JSON_HEADERS = {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -17,6 +20,7 @@ export async function fetchUser() {
     headers: { 'Accept': 'application/json' },
   })
   user.value = res.ok ? await safeJson(res) : null
+  resolveReady()
 }
 
 export async function login(email, password) {
