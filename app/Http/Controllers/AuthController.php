@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -20,6 +22,8 @@ class AuthController extends Controller
         $user = User::create($data);
         Auth::login($user);
         $request->session()->regenerate();
+
+        Mail::to($user->email)->send(new WelcomeMail($user));
 
         return response()->json(Auth::user(), 201);
     }
