@@ -29,7 +29,8 @@
 
         <v-btn variant="text" to="/contact" class="nav-btn">Contact</v-btn>
         <v-btn variant="text" href="/news.html" class="nav-btn">News</v-btn>
-        <v-btn v-if="user" variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
+        <v-btn v-if="user && user.role !== 'admin'" variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
+        <v-btn v-if="user && user.role === 'admin'" variant="text" to="/admin" class="nav-btn">Admin</v-btn>
       </div>
 
       <!-- User + logout -->
@@ -57,7 +58,8 @@
         <v-list-item title="Apmaiņa" to="/apmaina" />
         <v-list-item title="Contact" to="/contact" />
         <v-list-item title="News" href="/news.html" />
-        <v-list-item v-if="user" title="Vēsture" to="/vesture" />
+        <v-list-item v-if="user && user.role !== 'admin'" title="Vēsture" to="/vesture" />
+        <v-list-item v-if="user && user.role === 'admin'" title="Admin" to="/admin" />
         <v-list-item v-if="user" title="Profils" to="/profile" />
       </v-list>
     </v-navigation-drawer>
