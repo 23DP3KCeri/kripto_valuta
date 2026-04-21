@@ -9,6 +9,7 @@ const rates = reactive({
 })
 
 const transactions = reactive([])
+const wallets = reactive({})
 
 let intervalStarted = false
 
@@ -35,6 +36,18 @@ async function fetchTransactions() {
   transactions.splice(0, transactions.length, ...data)
 }
 
+async function fetchWallets() {
+  const res = await fetch('/api/wallets', {
+    credentials: 'include',
+    headers: { 'Accept': 'application/json' },
+  })
+  if (!res.ok) return
+  const data = await res.json()
+  for (const w of data) {
+    wallets[w.crypto] = parseFloat(w.balance)
+  }
+}
+
 async function addTransaction(payload) {
   const { user } = useAuth()
   const res = await fetch('/api/transactions', {
@@ -43,11 +56,13 @@ async function addTransaction(payload) {
     credentials: 'include',
     body: JSON.stringify({ user_id: user.value?.id, ...payload }),
   })
-  const tx = await res.json()
-  transactions.push(tx)
-  return tx
+  const data = await res.json()
+  if (!res.ok) throw data
+  transactions.push(data)
+  await fetchWallets()
+  return data
 }
 
 export function useCryptoState() {
-  return { rates, transactions, addTransaction, fetchTransactions }
+  return { rates, transactions, wallets, addTransaction, fetchTransactions, fetchWallets }
 }

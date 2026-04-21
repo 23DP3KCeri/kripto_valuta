@@ -34,6 +34,17 @@ class TransactionController extends Controller
             'iban'         => ['nullable', 'string'],
         ]);
 
+        if (in_array($data['type'], ['sell', 'exchange'])) {
+            $crypto = $data['type'] === 'sell' ? $data['crypto'] : $data['from_crypto'];
+            $balance = Wallet::where('user_id', $data['user_id'])
+                ->where('crypto', $crypto)
+                ->value('balance') ?? 0;
+
+            if ($data['amount'] > $balance) {
+                return response()->json(['message' => 'Nepietiek līdzekļu'], 422);
+            }
+        }
+
         $transaction = DB::transaction(function () use ($data) {
             $tx = Transaction::create($data);
 
@@ -87,6 +98,6 @@ class TransactionController extends Controller
             ['balance' => 0]
         );
 
-        $wallet->increment('balance', $delta);
+        $wallet->update(['balance' => max(0, $wallet->balance + $delta)]);
     }
 }

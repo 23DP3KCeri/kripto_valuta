@@ -88,14 +88,28 @@
       → <strong>{{ successData.eurAmount }} EUR</strong> tiks pārskaitīts uz {{ successData.iban }}.
     </v-alert>
 
+    <!-- Error alert -->
+    <v-alert
+      v-if="submitError"
+      type="error"
+      variant="tonal"
+      class="mt-6"
+      closable
+      @click:close="submitError = ''"
+    >
+      {{ submitError }}
+    </v-alert>
+
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
 
-const { rates, addTransaction } = useCryptoState()
+const { rates, addTransaction, wallets, fetchWallets } = useCryptoState()
+
+onMounted(() => fetchWallets())
 
 const cryptoOptions = [
   { symbol: 'BTC', label: 'Bitcoin (BTC)' },
@@ -113,20 +127,26 @@ const iban = ref('')
 const success = ref(false)
 const successData = ref({})
 const loading = ref(false)
+const submitError = ref('')
 
 const rate = computed(() => rates[selectedCrypto.value])
+const balance = computed(() => wallets[selectedCrypto.value] ?? 0)
 
-const amountError = computed(() =>
-  amount.value !== '' && parseFloat(amount.value) <= 0 ? 'Daudzumam jābūt lielākam par 0' : ''
-)
+const amountError = computed(() => {
+  const val = parseFloat(amount.value)
+  if (amount.value !== '' && val <= 0) return 'Daudzumam jābūt lielākam par 0'
+  if (amount.value !== '' && val > balance.value) return 'Nepietiek līdzekļu'
+  return ''
+})
 
 const ibanError = computed(() =>
   iban.value && !ibanRegex.test(iban.value.replace(/\s/g, '')) ? 'Lūdzu ievadi derīgu IBAN!' : ''
 )
 
-const isValid = computed(() =>
-  parseFloat(amount.value) > 0 && ibanRegex.test(iban.value.replace(/\s/g, ''))
-)
+const isValid = computed(() => {
+  const val = parseFloat(amount.value)
+  return val > 0 && val <= balance.value && ibanRegex.test(iban.value.replace(/\s/g, ''))
+})
 
 function calculateEur() {
   const val = parseFloat(amount.value)
@@ -144,6 +164,7 @@ function parseNum(str) {
 async function submit() {
   if (!isValid.value || loading.value) return
   loading.value = true
+  submitError.value = ''
   try {
     await addTransaction({ type: 'sell', crypto: selectedCrypto.value, amount: parseFloat(amount.value), result: parseNum(eurAmount.value), iban: iban.value })
     successData.value = { amount: amount.value, crypto: selectedCrypto.value, eurAmount: eurAmount.value, iban: iban.value }
@@ -151,6 +172,8 @@ async function submit() {
     amount.value = ''
     eurAmount.value = '0.00'
     iban.value = ''
+  } catch (e) {
+    submitError.value = e?.message ?? 'Kļūda! Lūdzu mēģini vēlreiz.'
   } finally {
     loading.value = false
   }

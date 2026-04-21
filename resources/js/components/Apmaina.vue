@@ -89,14 +89,28 @@
       → <strong>{{ successData.toAmount }} {{ successData.toCrypto }}</strong>.
     </v-alert>
 
+    <!-- Error alert -->
+    <v-alert
+      v-if="submitError"
+      type="error"
+      variant="tonal"
+      class="mt-6"
+      closable
+      @click:close="submitError = ''"
+    >
+      {{ submitError }}
+    </v-alert>
+
   </v-container>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
 
-const { rates, addTransaction } = useCryptoState()
+const { rates, addTransaction, wallets, fetchWallets } = useCryptoState()
+
+onMounted(() => fetchWallets())
 
 const cryptoOptions = [
   { symbol: 'BTC', label: 'Bitcoin (BTC)' },
@@ -112,12 +126,21 @@ const toAmount = ref('0.00000000')
 const success = ref(false)
 const successData = ref({})
 const loading = ref(false)
+const submitError = ref('')
 
-const amountError = computed(() =>
-  fromAmount.value !== '' && parseFloat(fromAmount.value) <= 0 ? 'Daudzumam jābūt lielākam par 0' : ''
-)
+const balance = computed(() => wallets[fromCrypto.value] ?? 0)
 
-const isValid = computed(() => parseFloat(fromAmount.value) > 0)
+const amountError = computed(() => {
+  const val = parseFloat(fromAmount.value)
+  if (fromAmount.value !== '' && val <= 0) return 'Daudzumam jābūt lielākam par 0'
+  if (fromAmount.value !== '' && val > balance.value) return 'Nepietiek līdzekļu'
+  return ''
+})
+
+const isValid = computed(() => {
+  const val = parseFloat(fromAmount.value)
+  return val > 0 && val <= balance.value
+})
 
 const toOptions = computed(() => cryptoOptions.filter(o => o.symbol !== fromCrypto.value))
 
@@ -145,12 +168,15 @@ function parseNum(str) {
 async function submit() {
   if (!isValid.value || loading.value) return
   loading.value = true
+  submitError.value = ''
   try {
     await addTransaction({ type: 'exchange', crypto: fromCrypto.value, from_crypto: fromCrypto.value, to_crypto: toCrypto.value, amount: parseFloat(fromAmount.value), result: parseNum(toAmount.value) })
     successData.value = { fromAmount: fromAmount.value, fromCrypto: fromCrypto.value, toAmount: toAmount.value, toCrypto: toCrypto.value }
     success.value = true
     fromAmount.value = ''
     toAmount.value = '0.00000000'
+  } catch (e) {
+    submitError.value = e?.message ?? 'Kļūda! Lūdzu mēģini vēlreiz.'
   } finally {
     loading.value = false
   }
