@@ -1,3 +1,25 @@
+<script setup>
+import { computed, ref } from 'vue'
+import { useTheme } from 'vuetify'
+import { useAuth } from '../composables/useAuth'
+import logo from '../assets/logo.png'
+
+const drawer = ref(false)
+
+const theme = useTheme()
+const isDark = computed(() => theme.global.name.value === 'dark')
+
+const toggleTheme = () => {
+  theme.global.name.value = isDark.value ? 'light' : 'dark'
+}
+
+const { user, logout } = useAuth()
+
+const handleLogout = async () => {
+  await logout()
+}
+</script>
+
 <template>
   <v-app>
 
@@ -5,7 +27,7 @@
     <v-app-bar color="black" flat height="70">
 
       <div class="logo-box">
-        <v-icon icon="mdi-bitcoin" class="logo-icon" />
+        <img :src="logo" class="logo-icon" />
         <span class="brand-title">CryptoBridge</span>
       </div>
 
@@ -147,8 +169,10 @@ export default {
 }
 
 .logo-icon {
-  font-size: 2.4em !important;
-  color: #f7931a !important;
+  height: 70px;
+  width: 78px;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-title {
