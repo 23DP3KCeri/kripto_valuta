@@ -11,17 +11,17 @@
 
       <v-card-text>
 
-        <p class="text-subtitle-2 mb-2">Maki</p>
+        <p class="text-subtitle-2 mb-2">{{ t('profile_wallets') }}</p>
 
         <div v-if="wallets.length === 0" class="text-medium-emphasis mb-4">
-          Nav maku.
+          {{ t('profile_no_wallets') }}
         </div>
 
         <v-table v-else class="mb-4">
           <thead>
             <tr>
-              <th>Kriptovalūta</th>
-              <th>Bilance</th>
+              <th>{{ t('profile_crypto') }}</th>
+              <th>{{ t('profile_balance') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -33,7 +33,7 @@
         </v-table>
 
         <v-btn variant="flat" class="gradient-btn" to="/vesture">
-          <v-icon icon="mdi-history" class="mr-1" /> Darījumu vēsture
+          <v-icon icon="mdi-history" class="mr-1" /> {{ t('profile_history_btn') }}
         </v-btn>
 
       </v-card-text>
@@ -44,8 +44,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useAuth } from '../composables/useAuth'
+import { useLang } from '../composables/useLang'
 
 const { user } = useAuth()
+const { t } = useLang()
 const wallets = ref([])
 
 onMounted(async () => {

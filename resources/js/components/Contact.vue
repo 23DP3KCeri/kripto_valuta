@@ -4,19 +4,19 @@
 
       <v-card-title class="text-h5 mb-4">
         <v-icon icon="mdi-headset" class="mr-2" />
-        Sazinies ar mums
+        {{ t('contact_title') }}
       </v-card-title>
 
       <v-card-text>
         <v-list lines="two">
           <v-list-item
             prepend-icon="mdi-email-outline"
-            title="E-pasts"
+            :title="t('contact_email_label')"
             subtitle="support@cryptobridge.com"
           />
           <v-list-item
             prepend-icon="mdi-phone-outline"
-            title="Tālrunis"
+            :title="t('contact_phone_label')"
             subtitle="+37100000000"
           />
           <v-list-item
@@ -31,4 +31,6 @@
 </template>
 
 <script setup>
+import { useLang } from '../composables/useLang'
+const { t } = useLang()
 </script>

@@ -4,20 +4,20 @@
 
       <v-card-title class="text-h5 mb-4">
         <v-icon icon="mdi-account-plus" class="mr-2" />
-        Reģistrēties
+        {{ t('register_title') }}
       </v-card-title>
 
       <v-card-text>
         <v-text-field
           v-model="name"
-          label="Vārds"
+          :label="t('register_name')"
           variant="outlined"
           class="mb-3"
         />
 
         <v-text-field
           v-model="email"
-          label="E-pasts"
+          :label="t('register_email')"
           variant="outlined"
           type="email"
           class="mb-3"
@@ -25,7 +25,7 @@
 
         <v-text-field
           v-model="password"
-          label="Parole"
+          :label="t('register_password')"
           variant="outlined"
           type="password"
           class="mb-4"
@@ -44,12 +44,12 @@
           :loading="loading"
           @click="submit"
         >
-          Reģistrēties
+          {{ t('register_btn') }}
         </v-btn>
 
         <p class="text-center mt-4 text-caption">
-          Jau ir konts?
-          <router-link to="/login">Pieslēgties</router-link>
+          {{ t('register_has_account') }}
+          <router-link to="/login">{{ t('register_login_link') }}</router-link>
         </p>
       </v-card-text>
     </v-card>
@@ -60,9 +60,11 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import { useLang } from '../composables/useLang'
 
 const { register } = useAuth()
 const router = useRouter()
+const { t } = useLang()
 
 const name = ref('')
 const email = ref('')
@@ -71,7 +73,7 @@ const error = ref('')
 const loading = ref(false)
 
 const passwordError = computed(() =>
-  password.value.length > 0 && password.value.length < 8 ? 'Parolei jābūt vismaz 8 rakstzīmes.' : ''
+  password.value.length > 0 && password.value.length < 8 ? t('register_err_password') : ''
 )
 
 async function submit() {
@@ -82,7 +84,7 @@ async function submit() {
     router.push('/')
   } catch (e) {
     const msgs = e?.errors ? Object.values(e.errors).flat() : null
-    error.value = msgs?.join(' ') ?? e?.message ?? 'Reģistrācija neizdevās.'
+    error.value = msgs?.join(' ') ?? e?.message ?? t('register_err_failed')
   } finally {
     loading.value = false
   }

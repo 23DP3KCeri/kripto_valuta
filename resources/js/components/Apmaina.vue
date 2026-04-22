@@ -4,7 +4,7 @@
 
       <v-card-title class="text-h5 mb-4">
         <v-icon icon="mdi-swap-horizontal" color="#2e62f1" class="mr-2" />
-        Kriptovalūtas apmaiņa
+        {{ t('exchange_page_title') }}
       </v-card-title>
 
       <v-card-text>
@@ -15,7 +15,7 @@
           :items="cryptoOptions"
           item-title="label"
           item-value="symbol"
-          label="No"
+          :label="t('label_from')"
           variant="outlined"
           class="mb-2"
         />
@@ -26,20 +26,20 @@
           :items="toOptions"
           item-title="label"
           item-value="symbol"
-          label="Uz"
+          :label="t('label_to')"
           variant="outlined"
           class="mb-2"
         />
 
         <!-- Cross rate display -->
         <p class="text-caption text-medium-emphasis mb-4">
-          Kurss: 1 {{ fromCrypto }} = {{ crossRate.toLocaleString('lv-LV', { minimumFractionDigits: 8, maximumFractionDigits: 8 }) }} {{ toCrypto }}
+          {{ t('label_crossrate') }}: 1 {{ fromCrypto }} = {{ crossRate.toLocaleString('lv-LV', { minimumFractionDigits: 8, maximumFractionDigits: 8 }) }} {{ toCrypto }}
         </p>
 
         <!-- From amount input -->
         <v-text-field
           v-model="fromAmount"
-          label="Daudzums"
+          :label="t('label_amount')"
           :suffix="fromCrypto"
           variant="outlined"
           type="number"
@@ -52,7 +52,7 @@
         <!-- To amount result -->
         <v-text-field
           :model-value="toAmount"
-          :label="`Saņemsi ${toCrypto}`"
+          :label="`${t('label_receive')} ${toCrypto}`"
           :suffix="toCrypto"
           variant="outlined"
           readonly
@@ -70,7 +70,7 @@
           :loading="loading"
           @click="submit"
         >
-          Apmainīt
+          {{ t('exchange_btn') }}
         </v-btn>
 
       </v-card-text>
@@ -85,7 +85,7 @@
       closable
       @click:close="success = false"
     >
-      Darījums veiksmīgi iesniegts! <strong>{{ successData.fromAmount }} {{ successData.fromCrypto }}</strong>
+      {{ t('tx_success') }} <strong>{{ successData.fromAmount }} {{ successData.fromCrypto }}</strong>
       → <strong>{{ successData.toAmount }} {{ successData.toCrypto }}</strong>.
     </v-alert>
 
@@ -107,8 +107,10 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
+import { useLang } from '../composables/useLang'
 
 const { rates, addTransaction, wallets, fetchWallets } = useCryptoState()
+const { t } = useLang()
 
 onMounted(() => fetchWallets())
 
@@ -132,8 +134,8 @@ const balance = computed(() => wallets[fromCrypto.value] ?? 0)
 
 const amountError = computed(() => {
   const val = parseFloat(fromAmount.value)
-  if (fromAmount.value !== '' && val <= 0) return 'Daudzumam jābūt lielākam par 0'
-  if (fromAmount.value !== '' && val > balance.value) return 'Nepietiek līdzekļu'
+  if (fromAmount.value !== '' && val <= 0) return t('err_amount_positive')
+  if (fromAmount.value !== '' && val > balance.value) return t('err_insufficient')
   return ''
 })
 
@@ -176,7 +178,7 @@ async function submit() {
     fromAmount.value = ''
     toAmount.value = '0.00000000'
   } catch (e) {
-    submitError.value = e?.message ?? 'Kļūda! Lūdzu mēģini vēlreiz.'
+    submitError.value = e?.message ?? t('err_generic')
   } finally {
     loading.value = false
   }

@@ -4,7 +4,7 @@
 
       <v-card-title class="text-h5 mb-4">
         <v-icon icon="mdi-history" class="mr-2" />
-        Darījumu vēsture
+        {{ t('history_title') }}
       </v-card-title>
 
       <v-card-text>
@@ -14,7 +14,7 @@
           <v-col cols="12" sm="3">
             <v-text-field
               v-model="searchId"
-              label="Meklēt pēc ID"
+              :label="t('filter_search_id')"
               variant="outlined"
               density="compact"
               clearable
@@ -25,7 +25,9 @@
             <v-select
               v-model="filterType"
               :items="typeOptions"
-              label="Tips"
+              item-title="title"
+              item-value="value"
+              :label="t('filter_type')"
               variant="outlined"
               density="compact"
               hide-details
@@ -35,7 +37,9 @@
             <v-select
               v-model="filterCrypto"
               :items="cryptoFilterOptions"
-              label="Kriptovalūta"
+              item-title="title"
+              item-value="value"
+              :label="t('filter_crypto')"
               variant="outlined"
               density="compact"
               hide-details
@@ -45,7 +49,9 @@
             <v-select
               v-model="sortBy"
               :items="sortOptions"
-              label="Kārtot pēc"
+              item-title="title"
+              item-value="value"
+              :label="t('filter_sort')"
               variant="outlined"
               density="compact"
               hide-details
@@ -56,19 +62,19 @@
         <!-- Table -->
         <div v-if="transactions.length === 0" class="text-center py-8">
           <v-icon icon="mdi-history" size="56" class="mb-3 text-medium-emphasis" />
-          <p class="text-medium-emphasis">Vēl nav neviena darījuma.</p>
+          <p class="text-medium-emphasis">{{ t('history_empty') }}</p>
         </div>
 
         <template v-else>
           <v-table v-if="filtered.length">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Tips</th>
-                <th>Kriptovalūta</th>
-                <th>Daudzums</th>
-                <th>Rezultāts</th>
-                <th>Datums</th>
+                <th>{{ t('col_id') }}</th>
+                <th>{{ t('col_type') }}</th>
+                <th>{{ t('col_crypto') }}</th>
+                <th>{{ t('col_amount') }}</th>
+                <th>{{ t('col_result') }}</th>
+                <th>{{ t('col_date') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -83,7 +89,7 @@
             </tbody>
           </v-table>
 
-          <p v-else class="text-medium-emphasis text-center mt-4">Nav atbilstošu darījumu.</p>
+          <p v-else class="text-medium-emphasis text-center mt-4">{{ t('history_no_results') }}</p>
         </template>
 
       </v-card-text>
@@ -94,24 +100,36 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
+import { useLang } from '../composables/useLang'
 
 const { transactions, fetchTransactions } = useCryptoState()
+const { t } = useLang()
 
 onMounted(fetchTransactions)
 
 const searchId = ref('')
-const filterType = ref('Visi')
-const filterCrypto = ref('Visi')
+const filterType = ref(null)
+const filterCrypto = ref(null)
 const sortBy = ref('date-desc')
 
-const typeOptions = ['Visi', 'buy', 'sell', 'exchange']
-const cryptoFilterOptions = ['Visi', 'BTC', 'ETH', 'BNB', 'SOL']
-const sortOptions = [
-  { title: 'Datums: jaunākie', value: 'date-desc' },
-  { title: 'Datums: vecākie', value: 'date-asc' },
-  { title: 'Daudzums: dilstošs', value: 'amount-desc' },
-  { title: 'Daudzums: augošs', value: 'amount-asc' },
-]
+const typeOptions = computed(() => [
+  { title: t('filter_all'), value: null },
+  { title: 'buy', value: 'buy' },
+  { title: 'sell', value: 'sell' },
+  { title: 'exchange', value: 'exchange' },
+])
+
+const cryptoFilterOptions = computed(() => [
+  { title: t('filter_all'), value: null },
+  ...['BTC', 'ETH', 'BNB', 'SOL'].map(c => ({ title: c, value: c })),
+])
+
+const sortOptions = computed(() => [
+  { title: t('sort_date_desc'), value: 'date-desc' },
+  { title: t('sort_date_asc'), value: 'date-asc' },
+  { title: t('sort_amount_desc'), value: 'amount-desc' },
+  { title: t('sort_amount_asc'), value: 'amount-asc' },
+])
 
 function parseAmount(val) {
   return parseFloat(String(val).replace(/\s/g, '').replace(',', '.')) || 0
@@ -124,11 +142,11 @@ const filtered = computed(() => {
     list = list.filter(tx => String(tx.id).includes(searchId.value.trim()))
   }
 
-  if (filterType.value !== 'Visi') {
+  if (filterType.value !== null) {
     list = list.filter(tx => tx.type === filterType.value)
   }
 
-  if (filterCrypto.value !== 'Visi') {
+  if (filterCrypto.value !== null) {
     list = list.filter(tx =>
       tx.crypto === filterCrypto.value ||
       tx.from_crypto === filterCrypto.value ||

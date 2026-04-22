@@ -4,13 +4,13 @@
 
       <v-card-title class="text-h5 mb-4">
         <v-icon icon="mdi-login" class="mr-2" />
-        Pieslēgties
+        {{ t('login_title') }}
       </v-card-title>
 
       <v-card-text>
         <v-text-field
           v-model="email"
-          label="E-pasts"
+          :label="t('login_email')"
           variant="outlined"
           type="email"
           class="mb-3"
@@ -19,7 +19,7 @@
 
         <v-text-field
           v-model="password"
-          label="Parole"
+          :label="t('login_password')"
           variant="outlined"
           type="password"
           class="mb-4"
@@ -37,12 +37,12 @@
           :loading="loading"
           @click="submit"
         >
-          Pieslēgties
+          {{ t('login_btn') }}
         </v-btn>
 
         <p class="text-center mt-4 text-caption">
-          Nav konta?
-          <router-link to="/register">Reģistrēties</router-link>
+          {{ t('login_no_account') }}
+          <router-link to="/register">{{ t('login_register_link') }}</router-link>
         </p>
       </v-card-text>
     </v-card>
@@ -53,9 +53,11 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import { useLang } from '../composables/useLang'
 
 const { login } = useAuth()
 const router = useRouter()
+const { t } = useLang()
 
 const email = ref('')
 const password = ref('')
@@ -63,7 +65,7 @@ const error = ref('')
 const loading = ref(false)
 
 const emailError = computed(() =>
-  email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) ? 'Ievadi derīgu e-pasta adresi.' : ''
+  email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value) ? t('login_err_email') : ''
 )
 
 async function submit() {
@@ -73,7 +75,8 @@ async function submit() {
     await login(email.value, password.value)
     router.push('/')
   } catch (e) {
-    error.value = e?.message ?? 'Pieslēgšanās neizdevās.'
+    const msg = e?.message ?? ''
+    error.value = msg.includes('Nepareizs') ? t('login_invalid') : (msg || t('login_err_failed'))
   } finally {
     loading.value = false
   }

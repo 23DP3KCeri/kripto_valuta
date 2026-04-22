@@ -2,22 +2,20 @@
 import { computed, ref } from 'vue'
 import { useTheme } from 'vuetify'
 import { useAuth } from '../composables/useAuth'
+import { useLang } from '../composables/useLang'
 import logo from '../assets/logo.png'
 
 const drawer = ref(false)
 
 const theme = useTheme()
 const isDark = computed(() => theme.global.name.value === 'dark')
-
-const toggleTheme = () => {
-  theme.global.name.value = isDark.value ? 'light' : 'dark'
-}
+const toggleTheme = () => { theme.global.name.value = isDark.value ? 'light' : 'dark' }
 
 const { user, logout } = useAuth()
+const handleLogout = async () => { await logout() }
 
-const handleLogout = async () => {
-  await logout()
-}
+const { lang, t } = useLang()
+const toggleLang = () => { lang.value = lang.value === 'lv' ? 'en' : 'lv' }
 </script>
 
 <template>
@@ -35,35 +33,40 @@ const handleLogout = async () => {
 
       <!-- Nav saites (desktop) -->
       <div class="nav-links-desktop">
-        <v-btn variant="text" to="/" class="nav-btn">Home</v-btn>
-        <v-btn variant="text" to="/about" class="nav-btn">About</v-btn>
+        <v-btn variant="text" to="/" class="nav-btn">{{ t('nav_home') }}</v-btn>
+        <v-btn variant="text" to="/about" class="nav-btn">{{ t('nav_about') }}</v-btn>
 
         <v-menu open-on-hover>
           <template #activator="{ props }">
-            <v-btn variant="text" v-bind="props" class="nav-btn">Services ▼</v-btn>
+            <v-btn variant="text" v-bind="props" class="nav-btn">{{ t('nav_services') }}</v-btn>
           </template>
           <v-list density="compact" bg-color="#1e1e1e">
-            <v-list-item title="Pārdošana" to="/pardosana" />
-            <v-list-item title="Pirkšana" to="/pirksana" />
-            <v-list-item title="Apmaiņa" to="/apmaina" />
+            <v-list-item :title="t('nav_sell')" to="/pardosana" />
+            <v-list-item :title="t('nav_buy')" to="/pirksana" />
+            <v-list-item :title="t('nav_exchange')" to="/apmaina" />
           </v-list>
         </v-menu>
 
-        <v-btn variant="text" to="/contact" class="nav-btn">Contact</v-btn>
-        <v-btn variant="text" href="/news.html" class="nav-btn">News</v-btn>
-        <v-btn v-if="user && user.role !== 'admin'" variant="text" to="/vesture" class="nav-btn">Vēsture</v-btn>
-        <v-btn v-if="user && user.role === 'admin'" variant="text" to="/admin" class="nav-btn">Admin</v-btn>
+        <v-btn variant="text" to="/contact" class="nav-btn">{{ t('nav_contact') }}</v-btn>
+        <v-btn variant="text" href="/news.html" class="nav-btn">{{ t('nav_news') }}</v-btn>
+        <v-btn v-if="user && user.role !== 'admin'" variant="text" to="/vesture" class="nav-btn">{{ t('nav_history') }}</v-btn>
+        <v-btn v-if="user && user.role === 'admin'" variant="text" to="/admin" class="nav-btn">{{ t('nav_admin') }}</v-btn>
       </div>
 
       <!-- User + logout -->
       <v-btn v-if="user" variant="text" class="nav-btn mr-1" to="/profile">{{ user.name }}</v-btn>
-      <v-btn v-if="user" icon variant="text" class="theme-btn" title="Iziet" @click="handleLogout">
+      <v-btn v-if="user" icon variant="text" class="theme-btn" :title="t('nav_logout_title')" @click="handleLogout">
         <v-icon icon="mdi-logout" />
       </v-btn>
 
       <!-- Dark/Light toggle -->
       <v-btn icon variant="text" @click="toggleTheme" class="theme-btn">
         {{ isDark ? '🌙' : '☀️' }}
+      </v-btn>
+
+      <!-- Lang toggle -->
+      <v-btn variant="text" class="theme-btn lang-btn" @click="toggleLang">
+        {{ lang === 'lv' ? 'LV' : 'EN' }}
       </v-btn>
 
       <!-- Hamburger (mobile) -->
@@ -73,15 +76,15 @@ const handleLogout = async () => {
     <!-- Mobile drawer -->
     <v-navigation-drawer v-model="drawer" temporary>
       <v-list>
-        <v-list-item title="Home" to="/" />
-        <v-list-item title="About" to="/about" />
-        <v-list-item title="Pārdošana" to="/pardosana" />
-        <v-list-item title="Pirkšana" to="/pirksana" />
-        <v-list-item title="Apmaiņa" to="/apmaina" />
-        <v-list-item title="Contact" to="/contact" />
-        <v-list-item title="News" href="/news.html" />
-        <v-list-item v-if="user && user.role !== 'admin'" title="Vēsture" to="/vesture" />
-        <v-list-item v-if="user && user.role === 'admin'" title="Admin" to="/admin" />
+        <v-list-item :title="t('nav_home')" to="/" />
+        <v-list-item :title="t('nav_about')" to="/about" />
+        <v-list-item :title="t('nav_sell')" to="/pardosana" />
+        <v-list-item :title="t('nav_buy')" to="/pirksana" />
+        <v-list-item :title="t('nav_exchange')" to="/apmaina" />
+        <v-list-item :title="t('nav_contact')" to="/contact" />
+        <v-list-item :title="t('nav_news')" href="/news.html" />
+        <v-list-item v-if="user && user.role !== 'admin'" :title="t('nav_history')" to="/vesture" />
+        <v-list-item v-if="user && user.role === 'admin'" :title="t('nav_admin')" to="/admin" />
         <v-list-item v-if="user" title="Profils" to="/profile" />
       </v-list>
     </v-navigation-drawer>
@@ -111,56 +114,14 @@ const handleLogout = async () => {
             </svg>
           </a>
         </div>
-        <p class="footer-text">&copy; 2025 Kripto valūtas pārdošana. Visas tiesības aizsargātas.</p>
+        <p class="footer-text">{{ t('footer_copy') }}</p>
       </div>
     </v-footer>
 
   </v-app>
 </template>
 
-<script>
-import { useTheme } from 'vuetify'
-import { useRouter } from 'vue-router'
-import { useAuth, logout } from '../composables/useAuth'
-
-export default {
-  name: 'App',
-
-  setup() {
-    const theme = useTheme()
-    const router = useRouter()
-    const { user } = useAuth()
-
-    async function handleLogout() {
-      await logout()
-      router.push('/login')
-    }
-
-    return { theme, user, handleLogout }
-  },
-
-  data() {
-    return {
-      drawer: false
-    }
-  },
-
-  computed: {
-    isDark() {
-      return this.theme.global.current.value.dark
-    }
-  },
-
-  methods: {
-    toggleTheme() {
-      this.theme.global.name.value = this.isDark ? 'light' : 'dark'
-    }
-  }
-}
-</script>
-
 <style scoped>
-/* Logo + nosaukums */
 .logo-box {
   display: flex;
   align-items: center;
@@ -182,7 +143,6 @@ export default {
   white-space: nowrap;
 }
 
-/* Desktop nav */
 .nav-links-desktop {
   display: flex;
   align-items: center;
@@ -205,14 +165,21 @@ export default {
   margin: 0 4px;
 }
 
-/* Paslēpt desktop nav uz mobilo */
+.lang-btn {
+  font-size: 0.8em !important;
+  font-weight: bold !important;
+  min-width: 36px !important;
+  color: #bbbbbb !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
 @media (max-width: 960px) {
   .nav-links-desktop {
     display: none;
   }
 }
 
-/* Footer */
 .cb-footer {
   padding: 16px !important;
   justify-content: center;

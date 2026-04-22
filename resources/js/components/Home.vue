@@ -2,8 +2,8 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <h1>Laipni lūgti CryptoBridge</h1>
-                <p>Droša un ērta kriptovalūtas apmaiņas platforma</p>
+                <h1>{{ t('home_title') }}</h1>
+                <p>{{ t('home_subtitle') }}</p>
             </v-col>
         </v-row>
 
@@ -11,10 +11,10 @@
             <v-col cols="12" md="4" class="d-flex">
                 <v-card class="lift-card">
                     <v-img src="https://blocktrade.com/wp-content/uploads/2023/09/cover_bitcoin-into-cash-1024x576.png" height="180" cover />
-                    <v-card-title>Pārdošana</v-card-title>
-                    <v-card-text>Pārdod savu kriptovalūtu un saņem naudu savā bankas kontā.</v-card-text>
+                    <v-card-title>{{ t('home_sell_title') }}</v-card-title>
+                    <v-card-text>{{ t('home_sell_text') }}</v-card-text>
                     <v-card-actions class="mt-auto">
-                        <v-btn color="primary" variant="flat" class="gradient-btn" to="/pardosana">Pārdot</v-btn>
+                        <v-btn color="primary" variant="flat" class="gradient-btn" to="/pardosana">{{ t('home_sell_btn') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -22,10 +22,10 @@
             <v-col cols="12" md="4" class="d-flex">
                 <v-card class="lift-card">
                     <v-img src="https://coincentral.com/wp-content/uploads/2022/08/how-to-buy-crypto.png" height="180" cover />
-                    <v-card-title>Pirkšana</v-card-title>
-                    <v-card-text>Iegādājies kriptovalūtu ērti un droši.</v-card-text>
+                    <v-card-title>{{ t('home_buy_title') }}</v-card-title>
+                    <v-card-text>{{ t('home_buy_text') }}</v-card-text>
                     <v-card-actions class="mt-auto">
-                        <v-btn color="primary" variant="flat" class="gradient-btn" to="/pirksana">Pirkt</v-btn>
+                        <v-btn color="primary" variant="flat" class="gradient-btn" to="/pirksana">{{ t('home_buy_btn') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -33,10 +33,10 @@
             <v-col cols="12" md="4" class="d-flex">
                 <v-card class="lift-card">
                     <v-img src="https://www.addevice.io/storage/ckeditor/uploads/images/6390774fc068f_guide.on.how.to.start.a.cryptocurrency.exchange.png" height="180" cover />
-                    <v-card-title>Apmaiņa</v-card-title>
-                    <v-card-text>Apmaini vienu kriptovalūtu pret citu.</v-card-text>
+                    <v-card-title>{{ t('home_exchange_title') }}</v-card-title>
+                    <v-card-text>{{ t('home_exchange_text') }}</v-card-text>
                     <v-card-actions class="mt-auto">
-                        <v-btn color="primary" variant="flat" class="gradient-btn" to="/apmaina">Apmainīt</v-btn>
+                        <v-btn color="primary" variant="flat" class="gradient-btn" to="/apmaina">{{ t('home_exchange_btn') }}</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -44,10 +44,9 @@
     </v-container>
 </template>
 
-<script>
-export default {
-    name: 'Home'
-}
+<script setup>
+import { useLang } from '../composables/useLang'
+const { t } = useLang()
 </script>
 
 <style scoped>

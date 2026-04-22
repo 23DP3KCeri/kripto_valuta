@@ -4,7 +4,7 @@
 
       <v-card-title class="text-h5 mb-4">
         <v-icon icon="mdi-cart" color="#188fdf" class="mr-2" />
-        Kriptovalūtas pirkšana
+        {{ t('buy_page_title') }}
       </v-card-title>
 
       <v-card-text>
@@ -15,20 +15,20 @@
           :items="cryptoOptions"
           item-title="label"
           item-value="symbol"
-          label="Izvēlies kriptovalūtu"
+          :label="t('label_choose_crypto')"
           variant="outlined"
           class="mb-2"
         />
 
         <!-- Current rate display -->
         <p class="text-caption text-medium-emphasis mb-4">
-          Aktuālais kurss: 1 {{ selectedCrypto }} = {{ rate.toLocaleString() }} EUR
+          {{ t('label_rate') }}: 1 {{ selectedCrypto }} = {{ rate.toLocaleString() }} EUR
         </p>
 
         <!-- EUR input -->
         <v-text-field
           v-model="eurAmount"
-          label="Daudzums EUR"
+          :label="t('buy_label_eur')"
           suffix="EUR"
           variant="outlined"
           type="number"
@@ -41,7 +41,7 @@
         <!-- Crypto result -->
         <v-text-field
           :model-value="cryptoAmount"
-          :label="`Saņemsi ${selectedCrypto}`"
+          :label="`${t('label_receive')} ${selectedCrypto}`"
           :suffix="selectedCrypto"
           variant="outlined"
           readonly
@@ -52,7 +52,7 @@
         <!-- IBAN input -->
         <v-text-field
           v-model="iban"
-          label="IBAN"
+          :label="t('label_iban')"
           placeholder="LV00BANK0000000000000"
           variant="outlined"
           class="mb-4"
@@ -69,7 +69,7 @@
           :loading="loading"
           @click="submit"
         >
-          Pirkt
+          {{ t('buy_btn') }}
         </v-btn>
 
       </v-card-text>
@@ -84,8 +84,8 @@
       closable
       @click:close="success = false"
     >
-      Darījums veiksmīgi iesniegts! <strong>{{ successData.eurAmount }} EUR</strong>
-      → <strong>{{ successData.cryptoAmount }} {{ successData.crypto }}</strong> tiks nosūtīts.
+      {{ t('tx_success') }} <strong>{{ successData.eurAmount }} EUR</strong>
+      → <strong>{{ successData.cryptoAmount }} {{ successData.crypto }}</strong> {{ t('buy_suffix') }}
     </v-alert>
 
   </v-container>
@@ -94,8 +94,10 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useCryptoState } from '../composables/useCryptoState'
+import { useLang } from '../composables/useLang'
 
 const { rates, addTransaction } = useCryptoState()
+const { t } = useLang()
 
 const cryptoOptions = [
   { symbol: 'BTC', label: 'Bitcoin (BTC)' },
@@ -117,11 +119,11 @@ const loading = ref(false)
 const rate = computed(() => rates[selectedCrypto.value])
 
 const amountError = computed(() =>
-  eurAmount.value !== '' && parseFloat(eurAmount.value) <= 0 ? 'Daudzumam jābūt lielākam par 0' : ''
+  eurAmount.value !== '' && parseFloat(eurAmount.value) <= 0 ? t('err_amount_positive') : ''
 )
 
 const ibanError = computed(() =>
-  iban.value && !ibanRegex.test(iban.value.replace(/\s/g, '')) ? 'Lūdzu ievadi derīgu IBAN!' : ''
+  iban.value && !ibanRegex.test(iban.value.replace(/\s/g, '')) ? t('err_iban_invalid') : ''
 )
 
 const isValid = computed(() =>
