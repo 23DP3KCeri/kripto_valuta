@@ -53,24 +53,26 @@ const toggleLang = () => { lang.value = lang.value === 'lv' ? 'en' : 'lv' }
         <v-btn v-if="user && user.role === 'admin'" variant="text" to="/admin" class="nav-btn">{{ t('nav_admin') }}</v-btn>
       </div>
 
-      <!-- User + logout -->
-      <v-btn v-if="user" variant="text" class="nav-btn mr-1" to="/profile">{{ user.name }}</v-btn>
-      <v-btn v-if="user" icon variant="text" class="theme-btn" :title="t('nav_logout_title')" @click="handleLogout">
-        <v-icon icon="mdi-logout" />
-      </v-btn>
+      <!-- Right-side actions (desktop) -->
+      <div class="toolbar-actions">
+        <v-btn v-if="user" variant="text" class="nav-btn mr-1" to="/profile">{{ user.name }}</v-btn>
+        <v-btn v-if="user" icon variant="text" class="theme-btn" :title="t('nav_logout_title')" @click="handleLogout">
+          <v-icon icon="mdi-logout" />
+        </v-btn>
 
-      <!-- Dark/Light toggle -->
-      <v-btn icon variant="text" @click="toggleTheme" class="theme-btn">
-        {{ isDark ? '🌙' : '☀️' }}
-      </v-btn>
+        <!-- Dark/Light toggle -->
+        <v-btn icon variant="text" @click="toggleTheme" class="theme-btn">
+          {{ isDark ? '🌙' : '☀️' }}
+        </v-btn>
 
-      <!-- Lang toggle -->
-      <v-btn variant="text" class="theme-btn lang-btn" @click="toggleLang">
-        {{ lang === 'lv' ? 'LV' : 'EN' }}
-      </v-btn>
+        <!-- Lang toggle -->
+        <v-btn variant="text" class="theme-btn lang-btn" @click="toggleLang">
+          {{ lang === 'lv' ? 'LV' : 'EN' }}
+        </v-btn>
+      </div>
 
       <!-- Hamburger (mobile) -->
-      <v-app-bar-nav-icon class="d-md-none" color="white" @click="drawer = !drawer" />
+      <v-app-bar-nav-icon class="mobile-only" color="white" @click="drawer = !drawer" />
     </v-app-bar>
 
     <!-- Mobile drawer -->
@@ -85,7 +87,11 @@ const toggleLang = () => { lang.value = lang.value === 'lv' ? 'en' : 'lv' }
         <v-list-item :title="t('nav_news')" href="/news.html" />
         <v-list-item v-if="user && user.role !== 'admin'" :title="t('nav_history')" to="/vesture" />
         <v-list-item v-if="user && user.role === 'admin'" :title="t('nav_admin')" to="/admin" />
-        <v-list-item v-if="user" title="Profils" to="/profile" />
+        <v-list-item v-if="user" title="Profils" to="/profile" prepend-icon="mdi-account-circle-outline" />
+        <v-list-item v-if="user" :title="t('nav_logout_title')" prepend-icon="mdi-logout" @click="handleLogout" />
+        <v-divider class="my-2" />
+        <v-list-item :title="isDark ? '☀️' : '🌙'" prepend-icon="mdi-theme-light-dark" @click="toggleTheme" />
+        <v-list-item :title="lang === 'lv' ? 'EN' : 'LV'" prepend-icon="mdi-translate" @click="toggleLang" />
       </v-list>
     </v-navigation-drawer>
 
@@ -148,6 +154,15 @@ const toggleLang = () => { lang.value = lang.value === 'lv' ? 'en' : 'lv' }
   align-items: center;
 }
 
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-only {
+  display: none;
+}
+
 .nav-btn {
   font-size: 0.85em !important;
   color: #bbbbbb !important;
@@ -175,8 +190,19 @@ const toggleLang = () => { lang.value = lang.value === 'lv' ? 'en' : 'lv' }
 }
 
 @media (max-width: 960px) {
-  .nav-links-desktop {
+  .nav-links-desktop,
+  .toolbar-actions {
     display: none;
+  }
+  .mobile-only {
+    display: inline-flex;
+  }
+  .brand-title {
+    font-size: 1.3em;
+  }
+  .logo-icon {
+    height: 48px;
+    width: 56px;
   }
 }
 
