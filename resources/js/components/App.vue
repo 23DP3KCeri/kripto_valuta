@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { useTheme } from 'vuetify'
 import { useAuth } from '../composables/useAuth'
 import { useLang } from '../composables/useLang'
-import logo from '../assets/logo.png'
+import logo from '../Assets/logo.png'
 
 const drawer = ref(false)
 
