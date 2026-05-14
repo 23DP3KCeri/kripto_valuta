@@ -1,9 +1,9 @@
 FROM php:8.4-cli
 
 RUN apt-get update && apt-get install -y \
-    curl zip unzip git libzip-dev libonig-dev libxml2-dev libsqlite3-dev
+    curl zip unzip git libzip-dev libonig-dev libxml2-dev libsqlite3-dev libpq-dev
 
-RUN docker-php-ext-install pdo mbstring zip
+RUN docker-php-ext-install pdo pdo_pgsql pdo_sqlite mbstring zip
 
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
