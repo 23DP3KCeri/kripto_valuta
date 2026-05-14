@@ -1,9 +1,10 @@
 FROM php:8.2-cli
 
 RUN apt-get update && apt-get install -y \
-    curl zip unzip git nodejs npm libzip-dev libonig-dev libxml2-dev
+    curl zip unzip git nodejs npm libzip-dev libonig-dev libxml2-dev libsqlite3-dev
 
-RUN docker-php-ext-install pdo pdo_sqlite mbstring zip
+RUN docker-php-ext-install pdo pdo_mysql mbstring zip
+RUN docker-php-ext-enable pdo
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
