@@ -10,7 +10,7 @@
         <v-row>
             <v-col cols="12" md="4" class="d-flex">
                 <v-card class="lift-card">
-                    <v-img src="https://blocktrade.com/wp-content/uploads/2023/09/cover_bitcoin-into-cash-1024x576.png" height="180" cover />
+                    <v-img src="/images/sell.webp" height="180" cover />
                     <v-card-title>{{ t('home_sell_title') }}</v-card-title>
                     <v-card-text>{{ t('home_sell_text') }}</v-card-text>
                     <v-card-actions class="mt-auto">
