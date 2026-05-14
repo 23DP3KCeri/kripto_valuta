@@ -1,5 +1,0 @@
-[phases.setup]
-nixPkgs = ["php84", "php84Extensions.mbstring", "php84Extensions.bcmath", "php84Extensions.pdo", "php84Extensions.pdo_mysql", "nodejs"]
-
-[variables]
-NIXPACKS_PHP_ROOT_DIR = "/app"
