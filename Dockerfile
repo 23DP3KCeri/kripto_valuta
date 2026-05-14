@@ -17,4 +17,5 @@ RUN composer install --no-dev
 RUN npm install && npm run build
 
 EXPOSE 8080
+RUN php artisan config:cache
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
